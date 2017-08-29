@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Text.RegularExpressions;
 using Android.App;
 using Android.OS;
+using Android.Text;
 using Android.Widget;
 
 namespace AutoWordQuiz {
@@ -21,7 +23,10 @@ namespace AutoWordQuiz {
       using (Stream stream = assembly.GetManifestResourceStream("AutoWordQuiz.Resources.dict.txt")) {
         if (stream != null)
           using (StreamReader reader = new StreamReader(stream)) {
-            while (!reader.EndOfStream) result.Add(reader.ReadLine());
+            while (!reader.EndOfStream) {
+              string tmp = reader.ReadLine();
+              if (tmp?.Length > 2) result.Add(tmp);
+            }
           }
       }
 #if DEBUG
@@ -44,26 +49,35 @@ namespace AutoWordQuiz {
       // Set our view from the "main" layout resource
       SetContentView(Resource.Layout.Main);
 
-      Button button = FindViewById<Button>(Resource.Id.MyButton);
       this.text = FindViewById<EditText>(Resource.Id.editText1);
 
-      button.Click += Button_Click;
-      this.text.AfterTextChanged += Button_Click;
+      this.text.AfterTextChanged += TextChanged;
 
       this.lv = FindViewById<ListView>(Resource.Id.listView1);
       this.lv.Adapter = this.listAdapter;
     }
 
-    private void Button_Click(object sender, EventArgs e) {
+    private void TextChanged(object sender, AfterTextChangedEventArgs e) {
+      if (this.text.Text.Length != 3) return;
+      GetWords();
+    }
+
+    private void GetWords() {
       string txt = this.text.Text;
+      string s1, s2, s3;
+      s1 = txt[0].ToString();
+      s2 = txt[1].ToString();
+      s3 = txt[2].ToString();
+
       if (txt.Length != 3) return;
 
       this.listAdapter.Clear();
-      this.listAdapter.AddAll(
-                              this.Words.Where(
-                                               w =>
-                                                 w.StartsWith(txt[0].ToString()) && txt.All(w.Contains)
-                                                 && w.IndexOf(txt[1], 1) < w.LastIndexOf(txt[2])).ToList());
+      this.listAdapter.AddAll(this.Words.Where(w=>Regex.IsMatch(w,$"^{s1}.*{s2}.*{s3}.*")).ToList());
+      //this.listAdapter.AddAll(
+      //                        this.Words.Where(
+      //                                         w =>
+      //                                           w.StartsWith(s1, StringComparison.InvariantCultureIgnoreCase) && txt.All(w.Contains)
+      //                                           && w.IndexOf(s2, 1, StringComparison.InvariantCultureIgnoreCase) < w.LastIndexOf(s3, 2, StringComparison.InvariantCultureIgnoreCase)).ToList());
     }
   }
 }
