@@ -7,10 +7,11 @@ using System.Text.RegularExpressions;
 using Android.App;
 using Android.OS;
 using Android.Text;
+using Android.Views.InputMethods;
 using Android.Widget;
 
 namespace AutoWordQuiz {
-  [Activity(Label = "AutoWordQuiz", MainLauncher = true, Icon = "@drawable/car")]
+  [Activity(Label = "AutoWordQuiz", MainLauncher = true, Icon = "@drawable/car", Theme = "@android:style/Theme.NoTitleBar")]
   public class MainActivity : Activity {
     private ArrayAdapter<string> listAdapter;
     private ListView lv;
@@ -46,6 +47,7 @@ namespace AutoWordQuiz {
       this.Words = LoadDict();
       this.listAdapter = new ArrayAdapter<string>(this, Android.Resource.Layout.SimpleListItem1);
 
+
       // Set our view from the "main" layout resource
       SetContentView(Resource.Layout.Main);
 
@@ -55,14 +57,17 @@ namespace AutoWordQuiz {
 
       this.lv = FindViewById<ListView>(Resource.Id.listView1);
       this.lv.Adapter = this.listAdapter;
+
     }
+
 
     private void TextChanged(object sender, AfterTextChangedEventArgs e) {
       if (this.text.Text.Length != 3) return;
-      GetWords();
+      GetWords(sender);
     }
 
-    private void GetWords() {
+    private void GetWords(object sender) {
+
       string txt = this.text.Text;
       string s1, s2, s3;
       s1 = txt[0].ToString();
@@ -72,12 +77,21 @@ namespace AutoWordQuiz {
       if (txt.Length != 3) return;
 
       this.listAdapter.Clear();
-      this.listAdapter.AddAll(this.Words.Where(w=>Regex.IsMatch(w,$"^{s1}.*{s2}.*{s3}.*")).ToList());
+      this.listAdapter.AddAll(this.Words.Where(w => Regex.IsMatch(w, $"^{s1}.*{s2}.*{s3}.*")).ToList());
+
+      if (this.listAdapter.Count > 4) {
+        InputMethodManager manager = (InputMethodManager)GetSystemService(InputMethodService);
+        manager.HideSoftInputFromWindow(this.text.WindowToken, HideSoftInputFlags.None);
+      }
       //this.listAdapter.AddAll(
       //                        this.Words.Where(
       //                                         w =>
       //                                           w.StartsWith(s1, StringComparison.InvariantCultureIgnoreCase) && txt.All(w.Contains)
       //                                           && w.IndexOf(s2, 1, StringComparison.InvariantCultureIgnoreCase) < w.LastIndexOf(s3, 2, StringComparison.InvariantCultureIgnoreCase)).ToList());
+    }
+
+    public override void OnBackPressed() {
+      Process.KillProcess(Process.MyPid());
     }
   }
 }
