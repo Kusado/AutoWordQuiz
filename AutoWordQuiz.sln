@@ -5,6 +5,8 @@ VisualStudioVersion = 15.0.26430.16
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AutoWordQuiz", "AutoWordQuiz\AutoWordQuiz.csproj", "{EC5129B6-A08C-4951-9C19-73D644C8C258}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EfremovaParser", "EfremovaParser\EfremovaParser.csproj", "{0DA4A84B-A975-4D3E-BDF1-ACA9BEDB8EE0}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -17,6 +19,10 @@ Global
 		{EC5129B6-A08C-4951-9C19-73D644C8C258}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EC5129B6-A08C-4951-9C19-73D644C8C258}.Release|Any CPU.Build.0 = Release|Any CPU
 		{EC5129B6-A08C-4951-9C19-73D644C8C258}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{0DA4A84B-A975-4D3E-BDF1-ACA9BEDB8EE0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0DA4A84B-A975-4D3E-BDF1-ACA9BEDB8EE0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0DA4A84B-A975-4D3E-BDF1-ACA9BEDB8EE0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0DA4A84B-A975-4D3E-BDF1-ACA9BEDB8EE0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
