@@ -32,12 +32,13 @@ namespace AutoWordQuiz {
       }
 #if DEBUG
       System.Diagnostics.Debug.WriteLine($"Total words loaded: {result.Count}");
+      // NOTE: use for debugging, not in released app code!
+      foreach (var res in assembly.GetManifestResourceNames()) {
+        System.Diagnostics.Debug.WriteLine("found resource: " + res);
+      }
 #endif
 
 
-      //// NOTE: use for debugging, not in released app code!
-      //foreach (var res in assembly.GetManifestResourceNames())
-      //  System.Diagnostics.Debug.WriteLine("found resource: " + res);
 
       return result;
     }
@@ -83,11 +84,6 @@ namespace AutoWordQuiz {
         InputMethodManager manager = (InputMethodManager)GetSystemService(InputMethodService);
         manager.HideSoftInputFromWindow(this.text.WindowToken, HideSoftInputFlags.None);
       }
-      //this.listAdapter.AddAll(
-      //                        this.Words.Where(
-      //                                         w =>
-      //                                           w.StartsWith(s1, StringComparison.InvariantCultureIgnoreCase) && txt.All(w.Contains)
-      //                                           && w.IndexOf(s2, 1, StringComparison.InvariantCultureIgnoreCase) < w.LastIndexOf(s3, 2, StringComparison.InvariantCultureIgnoreCase)).ToList());
     }
 
     public override void OnBackPressed() {
